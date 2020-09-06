@@ -78,7 +78,7 @@ const assertTestnetCompatibilitySegwitAddresses = (receiveAddresses, changeAddre
 describe('generate addresses on testnet', () => {
     it(
         'can generate sequential standard BIP84 native segwit ' +
-        'receive and change addresses from address index 0 with SLIP 0132 deactivated',
+        'receive and change addresses from address index 0',
         async () => {
 
             const network = TESTNET;
@@ -86,29 +86,7 @@ describe('generate addresses on testnet', () => {
             const derivationPath = "m/84'/0'/0'";
             const scriptType = "p2wpkh";
 
-            const applySlip0132 = false;
-
-            const { addresses } = await generateAddresses({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network, applySlip0132 });
-            const { receiveAddresses, changeAddresses } = addresses;
-
-            assertTestnetSegwitAddress(receiveAddresses, changeAddresses);
-
-        }
-    );
-
-    it(
-        'can generate sequential standard BIP84 native segwit ' +
-        'receive and change addresses from address index 0 with SLIP 0132 activated',
-        async () => {
-
-            const network = TESTNET;
-
-            const derivationPath = "m/84'/0'/0'";
-            const scriptType = "p2wpkh";
-
-            const applySlip0132 = true;
-
-            const { addresses } = await generateAddresses({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network, applySlip0132 });
+            const { addresses } = await generateAddresses({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
             const { receiveAddresses, changeAddresses } = addresses;
 
             assertTestnetSegwitAddress(receiveAddresses, changeAddresses);
@@ -118,7 +96,7 @@ describe('generate addresses on testnet', () => {
 
     it(
         'can generate sequential standard BIP44 legacy ' +
-        'receive and change addresses from address index 0 with SLIP 0132 deactivated',
+        'receive and change addresses from address index 0',
         async () => {
 
             const network = TESTNET;
@@ -126,28 +104,7 @@ describe('generate addresses on testnet', () => {
             const derivationPath = "m/44'/0'/0'";
             const scriptType = "p2pkh";
 
-            const applySlip0132 = false;
-
-            const { addresses } = await generateAddresses({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network, applySlip0132 });
-            const { receiveAddresses, changeAddresses } = addresses;
-
-            assertTestnetLegacyAddresses(receiveAddresses, changeAddresses);
-        }
-    );
-
-    it(
-        'can generate sequential standard BIP44 legacy ' +
-        'receive and change addresses from address index 0 with SLIP 0132 activated',
-        async () => {
-
-            const network = TESTNET;
-
-            const derivationPath = "m/44'/0'/0'";
-            const scriptType = "p2pkh";
-
-            const applySlip0132 = true;
-
-            const { addresses } = await generateAddresses({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network, applySlip0132 });
+            const { addresses } = await generateAddresses({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
             const { receiveAddresses, changeAddresses } = addresses;
 
             assertTestnetLegacyAddresses(receiveAddresses, changeAddresses);
@@ -156,7 +113,7 @@ describe('generate addresses on testnet', () => {
 
     it(
         'can generate sequential standard BIP49 compatibility segwit ' +
-        'receive and change addresses from address index 0 with SLIP 0132 deactivated',
+        'receive and change addresses from address index 0',
         async () => {
 
             const network = TESTNET;
@@ -164,27 +121,7 @@ describe('generate addresses on testnet', () => {
             const derivationPath = "m/49'/0'/0'";
             const scriptType = "p2wpkh-p2sh";
 
-            const applySlip0132 = false;
-
-            const { addresses } = await generateAddresses({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network, applySlip0132 });
-            const { receiveAddresses, changeAddresses } = addresses;
-
-            assertTestnetCompatibilitySegwitAddresses(receiveAddresses, changeAddresses);
-        });
-
-    it(
-        'can generate sequential standard BIP49 compatibility segwit ' +
-        'receive and change addresses from address index 0 with SLIP 0132 activated',
-        async () => {
-
-            const network = TESTNET;
-
-            const derivationPath = "m/49'/0'/0'";
-            const scriptType = "p2wpkh-p2sh";
-
-            const applySlip0132 = true;
-
-            const { addresses } = await generateAddresses({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network, applySlip0132 });
+            const { addresses } = await generateAddresses({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
             const { receiveAddresses, changeAddresses } = addresses;
 
             assertTestnetCompatibilitySegwitAddresses(receiveAddresses, changeAddresses);

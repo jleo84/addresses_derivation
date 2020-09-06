@@ -18,7 +18,28 @@ const getKeys = async (mnemonic, derivationPath, network) => {
     const xpub = child.toBase58();
     const xprv = root.derivePath(derivationPath).toBase58();
     const parentFingerprint = root.fingerprint;
+
     return { xpub, xprv, parentFingerprint };
+}
+
+const getDescriptor = (scriptType, fingerprint, path, xpub, chainIndex) => {
+
+    let descriptor;
+
+    const mIndex = path.indexOf('/');
+    const descPath = `[${fingerprint}${path.slice(mIndex)}]`;
+
+    if (scriptType === "p2wpkh") {
+        descriptor = `wpkh(${descPath}${xpub}/${chainIndex}/*)`;
+    } else if (scriptType === "p2pkh") {
+        descriptor = `pkh(${descPath}${xpub}/${chainIndex}/*)`;
+    } else if (scriptType === "p2wpkh-p2sh") {
+        descriptor = `sh(wpkh(${descPath}${xpub}/${chainIndex}/*))`;
+    } else {
+        throw Error("Script Type not unrecognized");
+    }
+
+    return descriptor;
 }
 
 const generateAddresses = async ({
@@ -32,25 +53,28 @@ const generateAddresses = async ({
     network = MAINNET,
     applySlip0132 = false }) => {
 
-    let _network = network;
+    const data = {};
 
-    if (applySlip0132) {
-        _network = getNetworkSlip0132Version(scriptType, _network);
-    }
+    // if (applySlip0132) {
+    const xNetwork = getNetworkSlip0132Version(scriptType, network);
+    data.slip0132 = await getKeys(mnemonic, derivationPath, xNetwork);
+    // }
 
-    let keys = await getKeys(mnemonic, derivationPath, _network);
+    let keys = await getKeys(mnemonic, derivationPath, network);
+    let descriptor = getDescriptor(scriptType, keys.parentFingerprint.toString('hex'), derivationPath, keys.xpub, receiveChainIndex);
 
-    const addresses = await getAddresses(keys, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, _network);
-    return { mnemonic, keys, addresses };
+    const addresses = await getAddresses(keys, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network);
+    return { ...data, mnemonic, descriptor, keys, addresses };
 }
 
 const main = async () => {
-    const mnemonic = "debris poem mouse great wing delay whip gift screen object siren learn shed author undo exit breeze live purchase combine recall away assume juice";
+    // const mnemonic = "debris poem mouse great wing delay whip gift screen object siren learn shed author undo exit breeze live purchase combine recall away assume juice";
+    const mnemonic = "trim width hundred claw artefact surprise industry where primary fuel gas begin scrub gate topple rude language sport trend regret lottery empower monster average";
 
     const network = MAINNET; //zMAINNET;
 
-    const derivationPath = "m/49'/0'/0'";
-    const scriptType = "p2wpkh-p2sh";
+    const derivationPath = "m/84'/0'/0'";
+    const scriptType = "p2wpkh"; //"p2wpkh-p2sh";// //"p2pkh";
 
     const startAddressIndex = 0;
     const endAddressIndex = 30;
@@ -58,13 +82,16 @@ const main = async () => {
     const receiveChainIndex = 0;
     const changeChainIndex = 1;
 
-    const { addresses } = await generateAddresses(mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network, false);
+    applySlip0132 = false;
+
+    const { addresses } = await generateAddresses({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network, applySlip0132 });
     const { receiveAddresses, changeAddresses } = addresses;
 
-    console.log(receiveAddresses.map(a => a.address));
+    //console.log(receiveAddresses.map(a => a.address));
+    //console.log(receiveAddresses.map(a => ({ address: a.address, bip32derivation: a.bip32derivation[0].pubkey, descriptor: a.descriptor })));
 }
 
-//main();
+main();
 
 module.exports = {
     TESTNET,

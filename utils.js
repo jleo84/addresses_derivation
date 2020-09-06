@@ -16,7 +16,9 @@ function toHexString(byteArray) {
     }).join('');
 }
 
-const EXTENDED_PRV_PUB_KEY_SILP_0132_VERSIONS = [
+// https://electrum.readthedocs.io/en/latest/xpub_version_bytes.html
+// https://github.com/satoshilabs/slips/blob/master/slip-0132.md
+const EXTENDED_PRV_PUB_KEY_SLIP_0132_VERSIONS = [
     { keys: "xprv/xpub", prv: 0x0488ade4, pub: 0x0488b21e, network: networks.bitcoin, encoding: "p2pkh" },
     { keys: "xprv/xpub", prv: 0x0488ade4, pub: 0x0488b21e, network: networks.bitcoin, encoding: "p2sh" },
     { keys: "yprv/ypub", prv: 0x049d7878, pub: 0x049d7cb2, network: networks.bitcoin, encoding: "p2wpkh-p2sh" },
@@ -32,7 +34,7 @@ const EXTENDED_PRV_PUB_KEY_SILP_0132_VERSIONS = [
 
 function getNetworkSlip0132Version(_encoding, _network) {
 
-    const xKeys = EXTENDED_PRV_PUB_KEY_SILP_0132_VERSIONS.find(k => k.network == _network && k.encoding == _encoding);
+    const xKeys = EXTENDED_PRV_PUB_KEY_SLIP_0132_VERSIONS.find(k => k.network == _network && k.encoding == _encoding);
 
     if (!xKeys) return _network;
 
