@@ -1,4 +1,4 @@
-const { TESTNET, MAINNET, generateAddresses } = require("../index.js");
+const { TESTNET, MAINNET, generateWallet } = require("../index.js");
 const { describe, it } = require('mocha');
 var chai = require('chai');
 var expect = chai.expect;
@@ -21,7 +21,7 @@ describe('wallet structure', () => {
             const derivationPath = "m/84'/0'/0'";
             const scriptType = "p2wpkh";
 
-            const wallet = await generateAddresses({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
+            const wallet = await generateWallet({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
 
             expect(wallet.mnemonic).to.equal(mnemonic);
             expect(wallet.descriptor).to.equal("wpkh([af552c16/84'/0'/0']xpub6DBqFu9HUCKRAoRKBZsakTQ4eXmaFHGP5AtjBBQYMKcchG3kyQzLhRQQ8pFL19tsXMpFbyhp5JCX1z7tGJV89211HDnBHEZmkZ4CWGttisP/0/*)");
@@ -47,7 +47,7 @@ describe('wallet structure', () => {
             const derivationPath = "m/49'/0'/0'";
             const scriptType = "p2wpkh-p2sh";
 
-            const wallet = await generateAddresses({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
+            const wallet = await generateWallet({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
 
             expect(wallet.mnemonic).to.equal(mnemonic);
             expect(wallet.descriptor).to.equal("sh(wpkh([af552c16/49'/0'/0']xpub6CHJwwB3nukoT7eMsJfcM8RTKUzPfH5LpFcSRbFGqRXHtUkAmPsz67Mo4mVe2vmPanBEaWyakwJ7arDE83L2U16BELTVJ1w5J8KVfyMqtzE/0/*))");
@@ -73,7 +73,7 @@ describe('wallet structure', () => {
             const derivationPath = "m/44'/0'/0'";
             const scriptType = "p2pkh";
 
-            const wallet = await generateAddresses({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
+            const wallet = await generateWallet({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
 
             expect(wallet.mnemonic).to.equal(mnemonic);
             expect(wallet.descriptor).to.equal("pkh([af552c16/44'/0'/0']xpub6DLwFPyfkVYnNiXh6f8t4XtSu6WpPyDgdiXmnD3w2u6Rt8MQYR2Sukxynj6zjGGYUDyej39rG2PnT8D4LJnrUSnuZtka3S9rK2CXvQLobT7/0/*)");

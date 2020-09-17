@@ -42,7 +42,37 @@ const getDescriptor = (scriptType, fingerprint, path, xpub, chainIndex) => {
     return descriptor;
 }
 
+const generateKeysAndDescriptors = async ({
+    mnemonic = generateMnemonic(),
+    derivationPath = "m/84'/0'/0'",
+    scriptType = "p2wpkh",
+    receiveChainIndex = 0,
+    network = MAINNET }) => {
+
+    const xNetwork = getNetworkSlip0132Version(scriptType, network);
+    data.slip0132 = await getKeys(mnemonic, derivationPath, xNetwork);
+
+    let keys = await getKeys(mnemonic, derivationPath, network);
+    let descriptor = getDescriptor(scriptType, keys.parentFingerprint.toString('hex'), derivationPath, keys.xpub, receiveChainIndex);
+
+    return { mnemonic, descriptor, keys };
+}
+
 const generateAddresses = async ({
+    keys,
+    derivationPath = "m/84'/0'/0'",
+    scriptType = "p2wpkh",
+    receiveChainIndex = 0,
+    changeChainIndex = 1,
+    startAddressIndex = 0,
+    endAddressIndex = 20,
+    network = MAINNET }) => {
+
+    const addresses = await getAddresses(keys, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network);
+    return addresses;
+}
+
+const generateWallet = async ({
     mnemonic = generateMnemonic(),
     derivationPath = "m/84'/0'/0'",
     scriptType = "p2wpkh",
@@ -50,15 +80,12 @@ const generateAddresses = async ({
     changeChainIndex = 1,
     startAddressIndex = 0,
     endAddressIndex = 20,
-    network = MAINNET,
-    applySlip0132 = false }) => {
+    network = MAINNET }) => {
 
     const data = {};
 
-    // if (applySlip0132) {
     const xNetwork = getNetworkSlip0132Version(scriptType, network);
     data.slip0132 = await getKeys(mnemonic, derivationPath, xNetwork);
-    // }
 
     let keys = await getKeys(mnemonic, derivationPath, network);
     let descriptor = getDescriptor(scriptType, keys.parentFingerprint.toString('hex'), derivationPath, keys.xpub, receiveChainIndex);
@@ -66,7 +93,7 @@ const generateAddresses = async ({
     const addresses = await getAddresses(keys, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network);
     return { ...data, mnemonic, descriptor, keys, addresses };
 }
-
+/*
 const main = async () => {
     // const mnemonic = "debris poem mouse great wing delay whip gift screen object siren learn shed author undo exit breeze live purchase combine recall away assume juice";
     const mnemonic = "trim width hundred claw artefact surprise industry where primary fuel gas begin scrub gate topple rude language sport trend regret lottery empower monster average";
@@ -91,12 +118,14 @@ const main = async () => {
     //console.log(receiveAddresses.map(a => ({ address: a.address, bip32derivation: a.bip32derivation[0].pubkey, descriptor: a.descriptor })));
 }
 
-main();
+main();*/
 
 module.exports = {
     TESTNET,
     MAINNET,
     generateMnemonic,
     getKeys,
-    generateAddresses
+    generateAddresses,
+    generateWallet,
+    generateKeysAndDescriptors
 }

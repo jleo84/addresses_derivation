@@ -1,4 +1,4 @@
-const { TESTNET, MAINNET, generateAddresses } = require("../index.js");
+const { TESTNET, MAINNET, generateWallet } = require("../index.js");
 const { describe, it } = require('mocha');
 var chai = require('chai');
 var expect = chai.expect;
@@ -86,7 +86,7 @@ describe('generate addresses on testnet', () => {
             const derivationPath = "m/84'/0'/0'";
             const scriptType = "p2wpkh";
 
-            const { addresses } = await generateAddresses({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
+            const { addresses } = await generateWallet({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
             const { receiveAddresses, changeAddresses } = addresses;
 
             assertTestnetSegwitAddress(receiveAddresses, changeAddresses);
@@ -104,7 +104,7 @@ describe('generate addresses on testnet', () => {
             const derivationPath = "m/44'/0'/0'";
             const scriptType = "p2pkh";
 
-            const { addresses } = await generateAddresses({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
+            const { addresses } = await generateWallet({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
             const { receiveAddresses, changeAddresses } = addresses;
 
             assertTestnetLegacyAddresses(receiveAddresses, changeAddresses);
@@ -121,7 +121,7 @@ describe('generate addresses on testnet', () => {
             const derivationPath = "m/49'/0'/0'";
             const scriptType = "p2wpkh-p2sh";
 
-            const { addresses } = await generateAddresses({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
+            const { addresses } = await generateWallet({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
             const { receiveAddresses, changeAddresses } = addresses;
 
             assertTestnetCompatibilitySegwitAddresses(receiveAddresses, changeAddresses);
