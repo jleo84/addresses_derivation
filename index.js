@@ -47,7 +47,7 @@ const generateKeysAndDescriptors = async ({
     derivationPath = "m/84'/0'/0'",
     scriptType = "p2wpkh",
     receiveChainIndex = 0,
-    network = MAINNET }) => {
+    network = MAINNET } = {}) => {
 
     const xNetwork = getNetworkSlip0132Version(scriptType, network);
     const slip0132 = await getKeys(mnemonic, derivationPath, xNetwork);
@@ -66,7 +66,7 @@ const generateAddresses = async ({
     changeChainIndex = 1,
     startAddressIndex = 0,
     endAddressIndex = 20,
-    network = MAINNET }) => {
+    network = MAINNET } = {}) => {
 
     const addresses = await getAddresses(keys, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network);
     return addresses;
@@ -80,7 +80,7 @@ const generateWallet = async ({
     changeChainIndex = 1,
     startAddressIndex = 0,
     endAddressIndex = 20,
-    network = MAINNET }) => {
+    network = MAINNET } = {}) => {
 
     const data = {};
 
@@ -93,6 +93,9 @@ const generateWallet = async ({
     const addresses = await getAddresses(keys, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network);
     return { ...data, mnemonic, descriptor, keys, addresses };
 }
+
+//(async () => console.log(await generateWallet()))();
+
 /*
 const main = async () => {
     // const mnemonic = "debris poem mouse great wing delay whip gift screen object siren learn shed author undo exit breeze live purchase combine recall away assume juice";
