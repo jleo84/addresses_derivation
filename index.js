@@ -50,12 +50,12 @@ const generateKeysAndDescriptors = async ({
     network = MAINNET }) => {
 
     const xNetwork = getNetworkSlip0132Version(scriptType, network);
-    data.slip0132 = await getKeys(mnemonic, derivationPath, xNetwork);
+    const slip0132 = await getKeys(mnemonic, derivationPath, xNetwork);
 
-    let keys = await getKeys(mnemonic, derivationPath, network);
-    let descriptor = getDescriptor(scriptType, keys.parentFingerprint.toString('hex'), derivationPath, keys.xpub, receiveChainIndex);
+    const keys = await getKeys(mnemonic, derivationPath, network);
+    const descriptor = getDescriptor(scriptType, keys.parentFingerprint.toString('hex'), derivationPath, keys.xpub, receiveChainIndex);
 
-    return { mnemonic, descriptor, keys };
+    return { mnemonic, slip0132, descriptor, keys };
 }
 
 const generateAddresses = async ({
