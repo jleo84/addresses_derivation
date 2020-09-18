@@ -1,4 +1,4 @@
-const { TESTNET, MAINNET, generateWallet } = require("../index.js");
+const { TESTNET, MAINNET, generateAddresses, getKeys } = require("../index.js");
 const { describe, it } = require('mocha');
 var chai = require('chai');
 var expect = chai.expect;
@@ -72,6 +72,7 @@ const assertMainnetCompatibilitySegwitAddresses = (receiveAddresses, changeAddre
 }
 
 describe('generate addresses on mainet', () => {
+
     it(
         'can generate sequential standard BIP84 native segwit ' +
         'receive and change addresses from address index 0',
@@ -82,7 +83,9 @@ describe('generate addresses on mainet', () => {
             const derivationPath = "m/84'/0'/0'";
             const scriptType = "p2wpkh";
 
-            const { addresses } = await generateWallet({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
+            const keys = await getKeys(mnemonic, derivationPath, MAINNET);
+
+            const addresses = await generateAddresses({ keys, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
             const { receiveAddresses, changeAddresses } = addresses;
 
             assertMainnetSegwitAddress(receiveAddresses, changeAddresses);
@@ -98,7 +101,9 @@ describe('generate addresses on mainet', () => {
             const derivationPath = "m/44'/0'/0'";
             const scriptType = "p2pkh";
 
-            const { addresses } = await generateWallet({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
+            const keys = await getKeys(mnemonic, derivationPath, MAINNET);
+
+            const addresses = await generateAddresses({ keys, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
             const { receiveAddresses, changeAddresses } = addresses;
 
             assertMainnetLegacyAddresses(receiveAddresses, changeAddresses);
@@ -114,8 +119,9 @@ describe('generate addresses on mainet', () => {
             const derivationPath = "m/49'/0'/0'";
             const scriptType = "p2wpkh-p2sh";
 
-            const { addresses } = await generateWallet({ mnemonic, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
-            const { receiveAddresses, changeAddresses } = addresses;
+            const keys = await getKeys(mnemonic, derivationPath, MAINNET);
+
+            const { receiveAddresses, changeAddresses } = await generateAddresses({ keys, derivationPath, scriptType, receiveChainIndex, changeChainIndex, startAddressIndex, endAddressIndex, network });
 
             assertMainnetCompatibilitySegwitAddresses(receiveAddresses, changeAddresses);
         });

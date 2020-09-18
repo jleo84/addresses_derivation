@@ -3,6 +3,8 @@ const bip39 = require("bip39");
 
 const { getAddresses } = require("./derivation")
 
+const { getAddressesFromXPub } = require("./derivationXPub")
+
 const { getNetworkSlip0132Version } = require("./utils");
 
 const TESTNET = bitcoinjs.networks.testnet;
@@ -130,5 +132,6 @@ module.exports = {
     getKeys,
     generateAddresses,
     generateWallet,
-    generateKeysAndDescriptors
+    generateKeysAndDescriptors,
+    getAddressesFromXPub //only this shoud be kept
 }
